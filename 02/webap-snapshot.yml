@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    cni.projectcalico.org/containerID: 851c2cb537c18fa1ed80f9b9ec56be53c7e1ccf08827bcb7e4375bb709ad5742
+    cni.projectcalico.org/podIP: 10.1.124.207/32
+    cni.projectcalico.org/podIPs: 10.1.124.207/32
+  creationTimestamp: "2024-02-03T22:07:55Z"
+  labels:
+    run: webapp
+  name: webapp
+  namespace: default
+  resourceVersion: "10668"
+  uid: 14588090-6c97-4f92-8379-8bb297534251
+spec:
+  containers:
+  - image: k8smaestro/web-app:1.0
+    imagePullPolicy: IfNotPresent
+    name: webapp
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-g28rw
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: fedora
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: kube-api-access-g28rw
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2024-02-03T22:07:55Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2024-02-03T22:07:56Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2024-02-03T22:07:56Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2024-02-03T22:07:55Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://8677e8757c059e89a9cdc546bb4e88c1cebee4fbc3bcf59b4a11e6550016b77a
+    image: docker.io/k8smaestro/web-app:1.0
+    imageID: docker.io/k8smaestro/web-app@sha256:34be68282713beb3c61abeaa913e4c73db65c09d474e151571316d53151b46b5
+    lastState: {}
+    name: webapp
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2024-02-03T22:07:55Z"
+  hostIP: 192.168.1.110
+  phase: Running
+  podIP: 10.1.124.207
+  podIPs:
+  - ip: 10.1.124.207
+  qosClass: BestEffort
+  startTime: "2024-02-03T22:07:55Z"

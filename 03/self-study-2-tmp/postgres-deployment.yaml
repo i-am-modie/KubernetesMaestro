@@ -22,9 +22,15 @@ spec:
             - name: POSTGRESQL_DATABASE
               value: k8smaestro
             - name: POSTGRESQL_PASSWORD
-              value: k8smaestro
-            - name: POSTGRESQL_USERNAME
-              value: odoo
+              valueFrom:
+                  secretKeyRef:
+                    name: odoo-secret
+                    key: dbPassword
+            - name: ODOO_DATABASE_USER
+              valueFrom:
+                  configMapKeyRef:
+                      name: odoo-config-map
+                      key: dbUser
           volumeMounts:
             - name: postgres-storage
               mountPath: /bitnami/postgresql
