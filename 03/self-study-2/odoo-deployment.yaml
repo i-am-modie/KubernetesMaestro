@@ -24,8 +24,14 @@ spec:
                       - name: ODOO_DATABASE_PORT_NUMBER
                         value: '5432'
                       - name: ODOO_DATABASE_USER
-                        value: 'odoo'
+                        valueFrom:
+                            configMapKeyRef:
+                                name: odoo-config-map
+                                key: dbUser
                       - name: ODOO_DATABASE_PASSWORD
-                        value: 'k8smaestro'
+                        valueFrom:
+                            secretKeyRef:
+                                name: odoo-secret
+                                key: dbPassword
                       - name: ODOO_DATABASE_NAME
                         value: 'k8smaestro'
