@@ -1,47 +1,57 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-enhanced
+  name: task-nginx
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      deployment: pods-nginx-enhanced
+      app: task-nginx-pods
   template:
     metadata:
-      name: pod-nginx-enhanced
+      name: task-nginx-pod
       labels:
-        deployment: pods-nginx-enhanced
+          app: task-nginx-pods
+      annotations:
+        container.apparmor.security.beta.kubernetes.io/nginx: runtime/default
     spec:
       securityContext:
         runAsUser: 10000
         runAsNonRoot: true
         runAsGroup: 10001
-        fsGroup: 10001 # changing ownership of a volume mounted to a pod
+        fsGroup: 10001
       containers:
-      - name: nginx-enhanced-ctr
-        image : k8smaestro/nginx-unprivileged:1.20.0
+      - name: nginx
+        image : nginxinc/nginx-unprivileged:1.27.2
         imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - all
+          privileged: false
         ports:
         - name: http
           containerPort: 8080
         resources:
           requests:
-            memory: "100Mi"
-            cpu: "200m"
+            memory: 100Mi
+            cpu: 200m
           limits:
-            memory: "300Mi"
-            cpu: "500m"
+            memory: 200Mi
+            cpu: 500m
         readinessProbe:
           httpGet:
             scheme: HTTP
-            path: /index.html
+            path: /
             port: http
           initialDelaySeconds: 10
           periodSeconds: 3
         livenessProbe:
           httpGet:
-            path: /index.html
+            path: /
             port: http
           failureThreshold: 1
           periodSeconds: 10

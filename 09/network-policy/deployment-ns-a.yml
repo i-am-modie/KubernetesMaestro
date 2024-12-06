@@ -28,7 +28,7 @@ spec:
       labels:
         deployment: pods-nginx-ns-a
       annotations:
-        container.apparmor.security.beta.kubernetes.io/nginx-enhanced-ctr: localhost/docker-default
+        container.apparmor.security.beta.kubernetes.io/nginx-enhanced-ctr: runtime/default
     spec:
       securityContext:
         runAsUser: 10000

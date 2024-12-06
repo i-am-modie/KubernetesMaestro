@@ -27,13 +27,13 @@ spec:
     spec:
       containers:
       - name: webapi
-        image: k8smaestro/web-aqi:1.0
+        image: k8smaestro/web-api:1.0
         ports:
         - containerPort: 80
         readinessProbe:
           initialDelaySeconds: 10
           httpGet:
-            path: "/heallh"
+            path: "/health"
             port: 80
             httpHeaders:
             - name: "Cookie"
@@ -49,10 +49,10 @@ spec:
         resources:
           requests:
             cpu: 100m
-            memory: 20Gi
+            memory: 20Mi
           limits:
             cpu: 200m
-            memory: 450Gi
+            memory: 450Mi
 ---
 apiVersion: v1
 kind: Service

@@ -5,9 +5,10 @@ metadata:
 spec:
   accessModes:
   - ReadWriteOnce
-  storageClassName: "standard"
+  storageClassName: my-aks-storage-class
   capacity:
     storage: 10Gi
+  azureDisk:
+    diskName: my-aks-disk
+    diskURI: /subscriptions/679e2e6c-732b-4950-ba4c-afaebd9386bf/resourcegroups/aks-rg1/providers/Microsoft.Compute/disks/pv-aks
   persistentVolumeReclaimPolicy: Retain # keep the persistent volume alive after removing PVC
-  gcePersistentDisk: # persistentDisk plugin on GCP (it must be created before create PV)
-    pdName: ps-vol  
